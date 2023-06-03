@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"GOHUB/routes"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -12,9 +13,16 @@ func SetupRoute(router *gin.Engine) {
 	// 注册全局中间件
 	registerGlobalMiddleWare(router)
 	//  注册 API 路由
-	router.RegisterAPIRoutes(router)
+	routes.RegisterAPIRoutes(router)
 	//  配置 404 路由
 	setup404Handler(router)
+}
+
+// 注册全局中间件
+func registerGlobalMiddleWare(router *gin.Engine) {
+	router.Use(
+		gin.Logger(),
+		gin.Recovery())
 }
 
 // 配置 404 路由
@@ -31,11 +39,4 @@ func setup404Handler(router *gin.Engine) {
 			})
 		}
 	})
-}
-
-// 注册全局中间件
-func registerGlobalMiddleWare(router *gin.Engine) {
-	router.Use(
-		gin.Logger(),
-		gin.Recovery())
 }
