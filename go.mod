@@ -6,6 +6,9 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/viper v1.16.0
+	gorm.io/driver/mysql v1.5.1
+	gorm.io/driver/sqlite v1.5.1
+	gorm.io/gorm v1.25.1
 )
 
 require (
@@ -46,7 +49,4 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/mysql v1.5.1 // indirect
-	gorm.io/driver/sqlite v1.5.1 // indirect
-	gorm.io/gorm v1.25.1 // indirect
 )
