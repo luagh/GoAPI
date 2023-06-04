@@ -3,6 +3,7 @@ package auth
 import (
 	v1 "GOHUB/app/http/controllers/api/v1"
 	"GOHUB/app/models/user"
+	"GOHUB/app/requests"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -18,10 +19,8 @@ type SingupController struct {
 func (sc *SingupController) IsPhoneExist(c *gin.Context) {
 
 	//请求的对象
-	type PhoneExistRequest struct {
-		Phone string `json:"phone"`
-	}
-	request := PhoneExistRequest{}
+
+	request := requests.SignupPhoneExistRequest{}
 
 	//解析json请求
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -33,6 +32,14 @@ func (sc *SingupController) IsPhoneExist(c *gin.Context) {
 		fmt.Println(err.Error())
 		return
 	}
+	errs := requests.ValidateSignupPhoneExist(&request, c)
+	if len(errs) > 0 {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"errors": errs,
+		})
+		return
+	}
+
 	//检查数据库返回响应
 	c.JSON(http.StatusOK, gin.H{
 		"exist": user.IsPhoneExist(request.Phone),
