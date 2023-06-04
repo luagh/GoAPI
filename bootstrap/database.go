@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"GOHUB/app/models/user"
 	"GOHUB/pkg/config"
 	"GOHUB/pkg/database"
 	"errors"
@@ -18,7 +19,7 @@ func SetupDB() {
 	var dbConfig gorm.Dialector
 	switch config.Get("database.connection") {
 	case "mysql":
-		//构建DSN信息
+		// 构建 DSN 信息
 		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=%v&parseTime=True&multiStatements=true&loc=Local",
 			config.Get("database.mysql.username"),
 			config.Get("database.mysql.password"),
@@ -31,15 +32,21 @@ func SetupDB() {
 			DSN: dsn,
 		})
 	case "sqlite":
-		//初始化sqlite
+		// 初始化 sqlite
 		database := config.Get("database.sqlite.database")
 		dbConfig = sqlite.Open(database)
 	default:
 		panic(errors.New("database connection not supported"))
 	}
-	//链接数据库 以及设置它的日志模式 最大链接数 最大空闲链接数 和过期时间
+
+	// 连接数据库，并设置 GORM 的日志模式
 	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
+
+	// 设置最大连接数
 	database.SQLDB.SetMaxOpenConns(config.GetInt("database.mysql.max_open_connections"))
+	// 设置最大空闲连接数
 	database.SQLDB.SetMaxIdleConns(config.GetInt("database.mysql.max_idle_connections"))
+	// 设置每个链接的过期时间
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
+	database.DB.AutoMigrate(&user.User{})
 }

@@ -2,8 +2,8 @@ package main
 
 import (
 	"GOHUB/bootstrap"
+	btsConfig "GOHUB/config"
 	"GOHUB/pkg/config"
-	btsConfig "GOHUB/pkg/config"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"

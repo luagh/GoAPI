@@ -7,13 +7,14 @@ import (
 	gormlogger "gorm.io/gorm/logger"
 )
 
-// 数据库操作
+// DB 对象
 var DB *gorm.DB
 var SQLDB *sql.DB
 
-// 连接数据库
+// Connect 连接数据库
 func Connect(dbConfig gorm.Dialector, _logger gormlogger.Interface) {
-	//使用gorm.Open链接数据库
+
+	// 使用 gorm.Open 连接数据库
 	var err error
 	DB, err = gorm.Open(dbConfig, &gorm.Config{
 		Logger: _logger,
@@ -22,10 +23,10 @@ func Connect(dbConfig gorm.Dialector, _logger gormlogger.Interface) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	//获取底层的sqlDB
+
+	// 获取底层的 sqlDB
 	SQLDB, err = DB.DB()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-
 }
