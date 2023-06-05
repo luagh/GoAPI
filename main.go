@@ -26,6 +26,7 @@ func main() {
 	bootstrap.SetupRoute(r)
 	// 初始化 Logger
 	bootstrap.SetupLogger()
+	gin.SetMode(gin.ReleaseMode)
 	err := r.Run(":" + config.Get("app.port"))
 	if err != nil {
 		// 错误处理
