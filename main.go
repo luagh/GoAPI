@@ -20,13 +20,16 @@ func main() {
 	config.InitConfig(env)
 	// new 一个 Gin Engine 实例
 	r := gin.New()
-	//初始化DB
-	bootstrap.SetupDB()
+
+	// 初始化 Redis
+	bootstrap.SetupRedis()
 	//  // 初始化路由绑定
 	bootstrap.SetupRoute(r)
 	// 初始化 Logger
 	bootstrap.SetupLogger()
 	gin.SetMode(gin.ReleaseMode)
+	//初始化DB
+	bootstrap.SetupDB()
 	err := r.Run(":" + config.Get("app.port"))
 	if err != nil {
 		// 错误处理
