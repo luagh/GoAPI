@@ -4,8 +4,8 @@ import (
 	v1 "GOHUB/app/http/controllers/api/v1"
 	"GOHUB/app/models/user"
 	"GOHUB/app/requests"
+	"GOHUB/pkg/response"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // 处理用户身份认证相关逻辑
@@ -18,14 +18,14 @@ type SingupController struct {
 //检测手机是否被注册
 
 func (sc *SingupController) IsPhoneExist(c *gin.Context) {
-
+	// 获取请求参数，并做表单验证
 	request := requests.SignupPhoneExistRequest{}
 	if ok := requests.Validate(c, &request, requests.SignupPhoneExist); !ok {
 		return
 	}
 
 	//检查数据库返回响应
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsPhoneExist(request.Phone),
 	})
 }
@@ -37,7 +37,7 @@ func (sc *SingupController) IsEmailExist(c *gin.Context) {
 		return
 	}
 	//检查数据库返回响应
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsEmailExist(request.Email),
 	})
 
