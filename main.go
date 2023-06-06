@@ -25,6 +25,7 @@ func main() {
 	bootstrap.SetupRedis()
 	//  // 初始化路由绑定
 	bootstrap.SetupRoute(r)
+
 	// 初始化 Logger
 	bootstrap.SetupLogger()
 	gin.SetMode(gin.ReleaseMode)
