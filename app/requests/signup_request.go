@@ -52,12 +52,13 @@ func SignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
 type SignupUsingPhoneRequest struct {
 	Phone           string `json:"phone,omitempty" valid:"phone"`
 	VerifyCode      string `json:"verify_code,omitempty" valid:"verify_code"`
-	Name            string `json:"name" valid:"name"`
+	Name            string `valid:"name" json:"name"`
 	Password        string `valid:"password" json:"password,omitempty"`
 	PasswordConfirm string `valid:"password_confirm" json:"password_confirm,omitempty"`
 }
 
 func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
+
 	rules := govalidator.MapData{
 		"phone":            []string{"required", "digits:11", "not_exists:users,phone"},
 		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
@@ -65,6 +66,7 @@ func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
 		"password_confirm": []string{"required"},
 		"verify_code":      []string{"required", "digits:6"},
 	}
+
 	messages := govalidator.MapData{
 		"phone": []string{
 			"required:手机号为必填项，参数名称 phone",
@@ -87,9 +89,12 @@ func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
 			"digits:验证码长度必须为 6 位的数字",
 		},
 	}
+
 	errs := validate(data, rules, messages)
-	_data := data.(*SignupPhoneExistRequest)
-	errs = validates.ValidatePasswordConfirm(_data.Password, _data.PasswordConfirm, errs)
+
+	_data := data.(*SignupUsingPhoneRequest)
+	errs = validators.ValidatePasswordConfirm(_data.Password, _data.PasswordConfirm, errs)
 	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
+
 	return errs
 }
