@@ -1,6 +1,9 @@
 package user
 
-import "GOHUB/app/models"
+import (
+	"GOHUB/app/models"
+	"GOHUB/pkg/database"
+)
 
 //存放用户模型 相关逻辑
 
@@ -14,4 +17,9 @@ type User struct {
 	Password string `json:"-"`
 
 	models.CommonTimestampsField
+}
+
+// Create 创建用户，通过 User.ID 来判断是否创建成功
+func (userModel *User) Create() {
+	database.DB.Create(&userModel)
 }
