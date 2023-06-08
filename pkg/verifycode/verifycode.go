@@ -39,7 +39,10 @@ func NewVerifyCode() *VerifyCode {
 func (vc *VerifyCode) SendSMS(phone string) bool {
 
 	// 方便本地和 API 自动测试
-	if !app.IsProduction() && phone == "13017173106" {
+	//if !app.IsProduction() && phone == "13017173106" {
+	//	return true
+	//}
+	if !app.IsProduction() && strings.HasPrefix(phone, config.GetString("app.tep")) {
 		return true
 	}
 	// 生成验证码

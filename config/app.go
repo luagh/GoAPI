@@ -19,6 +19,7 @@ func init() {
 			"url": conf.Env("APP_URL", "http://localhost:8081"),
 			// 设置时区，JWT 里会使用，日志记录里也会使用到
 			"timezone": conf.Env("TIMEZONE", "Asia/Shanghai"),
+			"tep":      conf.Env("PHONE", "18373495023"),
 		}
 	})
 }
