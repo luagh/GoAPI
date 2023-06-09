@@ -37,7 +37,8 @@ func NewVerifyCode() *VerifyCode {
 
 // SendSMS 发送短信验证码
 func (vc *VerifyCode) SendSMS(phone string) bool {
-
+	// 生成验证码
+	code := vc.generateVerifyCode(phone)
 	// 方便本地和 API 自动测试
 	//if !app.IsProduction() && phone == "13017173106" {
 	//	return true
@@ -45,8 +46,6 @@ func (vc *VerifyCode) SendSMS(phone string) bool {
 	if !app.IsProduction() && strings.HasPrefix(phone, config.GetString("app.tep")) {
 		return true
 	}
-	// 生成验证码
-	code := vc.generateVerifyCode(phone)
 
 	return sms.NewSMS().Send(phone, sms.Message{
 		Template: config.GetString("sms.aliyun.template_code"),
@@ -85,7 +84,7 @@ func (vc *VerifyCode) CheckAnswer(key string, answer string) bool {
 	// 方便开发，在非生产环境下，具备特殊前缀的手机号和 Email后缀，会直接验证成功
 	if !app.IsProduction() &&
 		(strings.HasSuffix(key, config.GetString("verifycode.debug_email_suffix")) ||
-			strings.HasPrefix(key, config.GetString("verifycode.debug_phone_prefix"))) {
+			strings.HasPrefix(key, config.GetString("app.tep"))) {
 		return true
 	}
 	return vc.Store.Verify(key, answer, false)

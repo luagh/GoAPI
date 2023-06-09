@@ -29,3 +29,9 @@ func (userModel *User) Create() {
 func (userModel *User) ComparePassword(_password string) bool {
 	return hash.BcryptCheck(_password, userModel.Password)
 }
+
+// 将用户模型保存到数据库中
+func (userModel *User) Save() (rowsAffected int64) {
+	result := database.DB.Save(&userModel)
+	return result.RowsAffected
+}
