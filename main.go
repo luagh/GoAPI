@@ -6,9 +6,7 @@ import (
 	btsConfig "GOHUB/config"
 	"GOHUB/pkg/config"
 	"GOHUB/pkg/console"
-	"flag"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -19,29 +17,6 @@ func init() {
 }
 
 func main() {
-
-	var env string
-	flag.StringVar(&env, "env", "", "加载 .env 文件，如 --env=testing 加载的是 .env.testing 文件")
-	flag.Parse()
-	config.InitConfig(env)
-	// new 一个 Gin Engine 实例
-	r := gin.New()
-
-	// 初始化 Redis
-	bootstrap.SetupRedis()
-	//  // 初始化路由绑定
-	bootstrap.SetupRoute(r)
-
-	// 初始化 Logger
-	bootstrap.SetupLogger()
-	gin.SetMode(gin.ReleaseMode)
-	//初始化DB
-	bootstrap.SetupDB()
-	err := r.Run(":" + config.Get("app.port"))
-	if err != nil {
-		// 错误处理
-		fmt.Println(err.Error())
-	}
 	// 应用的主入口，默认调用 cmd.CmdServe 命令
 	var rootCmd = &cobra.Command{
 		Use:   config.Get("app.name"),
@@ -70,6 +45,7 @@ func main() {
 	// 注册子命令
 	rootCmd.AddCommand(
 		cmd.CmdServe,
+		cmd.CmdKey,
 	)
 
 	// 配置默认运行 Web 服务
