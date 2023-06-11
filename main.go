@@ -14,6 +14,7 @@ import (
 func init() {
 	// 加载 config 目录下的配置信息
 	btsConfig.Initialize()
+
 }
 
 func main() {
@@ -46,6 +47,7 @@ func main() {
 	rootCmd.AddCommand(
 		cmd.CmdServe,
 		cmd.CmdKey,
+		cmd.CmdPlay,
 	)
 
 	// 配置默认运行 Web 服务
