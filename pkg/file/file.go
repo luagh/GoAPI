@@ -1,7 +1,11 @@
 // Package file 文件操作辅助函数
 package file
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+	"strings"
+)
 
 // 将数据存入文件里
 func Put(data []byte, to string) error {
@@ -17,4 +21,7 @@ func Exists(fileToCheck string) bool {
 		return false
 	}
 	return true
+}
+func FileNameWithoutExtension(fileName string) string {
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
