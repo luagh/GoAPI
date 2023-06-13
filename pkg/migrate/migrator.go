@@ -6,7 +6,7 @@ import (
 	"GOHUB/pkg/database"
 	"GOHUB/pkg/file"
 	"gorm.io/gorm"
-	"os"
+	"io/ioutil"
 )
 
 // Migrator 数据迁移操作类
@@ -82,6 +82,7 @@ func (migrator *Migrator) Up() {
 
 // Rollback 回滚上一个操作
 func (migrator *Migrator) Rollback() {
+
 	// 获取最后一批次的迁移数据
 	lastMigration := Migration{}
 	migrator.DB.Order("id DESC").First(&lastMigration)
@@ -92,7 +93,6 @@ func (migrator *Migrator) Rollback() {
 	if !migrator.rollbackMigrations(migrations) {
 		console.Success("[migrations] table is empty, nothing to rollback.")
 	}
-
 }
 
 // 回退迁移，按照倒序执行迁移的 down 方法
@@ -145,7 +145,7 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 
 	// 读取 database/migrations/ 目录下的所有文件
 	// 默认是会按照文件名称进行排序
-	files, err := os.ReadDir(migrator.Folder)
+	files, err := ioutil.ReadDir(migrator.Folder)
 	console.ExitIf(err)
 
 	var migrateFiles []MigrationFile
@@ -206,5 +206,24 @@ func (migrator *Migrator) Refresh() {
 	migrator.Reset()
 
 	// 再次执行所有迁移
+	migrator.Up()
+}
+
+// Fresh Drop 所有的表并重新运行所有迁移
+func (migrator *Migrator) Fresh() {
+
+	// 获取数据库名称，用以提示
+	dbname := database.CurrentDatabase()
+
+	// 删除所有表
+	err := database.DeleteAllTables()
+	console.ExitIf(err)
+	console.Success("clearup database " + dbname)
+
+	// 重新创建 migrates 表
+	migrator.createMigrationsTable()
+	console.Success("[migrations] table created.")
+
+	// 重新调用 up 命令
 	migrator.Up()
 }
