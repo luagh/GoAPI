@@ -1,3 +1,5 @@
+package link
+
 // func (link *Link) BeforeSave(tx *gorm.DB) (err error) {}
 // func (link *Link) BeforeCreate(tx *gorm.DB) (err error) {}
 // func (link *Link) AfterCreate(tx *gorm.DB) (err error) {}
