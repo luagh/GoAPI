@@ -87,7 +87,7 @@ func (ctrl *TopicsController) Delete(c *gin.Context) {
 	response.Abort500(c, "删除失败，请稍后尝试~")
 }
 
-// 创建列表
+// 创建话题列表
 func (ctrl *TopicsController) Index(c *gin.Context) {
 	request := requests.PaginationRequest{}
 	if ok := requests.Validate(c, &request, requests.Pagination); !ok {
@@ -99,4 +99,14 @@ func (ctrl *TopicsController) Index(c *gin.Context) {
 		"data":  data,
 		"pager": pager,
 	})
+}
+
+// 显示话题列表
+func (ctrl *TopicsController) Show(c *gin.Context) {
+	topicModel := topic.Get(c.Param("id"))
+	if topicModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+	response.Data(c, topicModel)
 }
