@@ -1,3 +1,5 @@
+package category
+
 // func (category *Category) BeforeSave(tx *gorm.DB) (err error) {}
 // func (category *Category) BeforeCreate(tx *gorm.DB) (err error) {}
 // func (category *Category) AfterCreate(tx *gorm.DB) (err error) {}

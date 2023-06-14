@@ -15,6 +15,7 @@ var CmdMakeAPIController = &cobra.Command{
 }
 
 func runMakeAPIController(cmd *cobra.Command, args []string) {
+
 	// 处理参数，要求附带 API 版本（v1 或者 v2）
 	array := strings.Split(args[0], "/")
 	if len(array) != 2 {

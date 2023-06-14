@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// migrate 和 migrate up 命令
 var CmdMigrate = &cobra.Command{
 	Use:   "migrate",
 	Short: "Run database migration",
@@ -72,7 +71,6 @@ func runRefresh(cmd *cobra.Command, args []string) {
 	migrator().Refresh()
 }
 
-// 创建命令
 var CmdMigrateFresh = &cobra.Command{
 	Use:   "fresh",
 	Short: "Drop all tables and re-run all migrations",

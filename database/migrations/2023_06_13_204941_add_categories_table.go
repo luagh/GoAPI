@@ -8,6 +8,7 @@ import (
 )
 
 func init() {
+
 	type Category struct {
 		models.BaseModel
 

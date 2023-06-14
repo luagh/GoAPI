@@ -22,7 +22,7 @@ type Model struct {
 }
 
 // stubsFS 方便我们后面打包这些 .stub 为后缀名的文件
-//
+
 //go:embed stubs
 var stubsFS embed.FS
 
@@ -36,12 +36,6 @@ func init() {
 	// 注册 make 的子命令
 	CmdMake.AddCommand(
 		CmdMakeCMD,
-		CmdMakeModel,
-		CmdMakeAPIController,
-		CmdMakeRequest,
-		CmdMakeMigration,
-		CmdMakeFactory,
-		CmdMakeSeeder,
 	)
 }
 
